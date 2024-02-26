@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
+#define BL32_PHYS_OFFSET 0x10000
+
 #include <platform_def.h>
 
 #include <common/desc_image_load.h>
@@ -87,13 +89,14 @@ static bl_mem_params_node_t bl2_mem_params_descs[] = {
 
 	  SET_STATIC_PARAM_HEAD(ep_info, PARAM_EP, VERSION_2,
 				entry_point_info_t, BL32_EP_ATTRIBS),
-	  .ep_info.pc = BL32_BASE,
+	  .ep_info.pc = BL32_BASE + BL32_PHYS_OFFSET,
 
 	  SET_STATIC_PARAM_HEAD(image_info, PARAM_EP, VERSION_2,
 				image_info_t, BL32_IMG_ATTRIBS),
 
-	  .image_info.image_base = BL32_BASE,
-	  .image_info.image_max_size = BL32_LIMIT - BL32_BASE,
+	   /* FIXME(seonghp) */
+	  .image_info.image_base = BL32_BASE + BL32_PHYS_OFFSET,
+	  .image_info.image_max_size = BL32_LIMIT - BL32_BASE - BL32_PHYS_OFFSET,
 
 	  .next_handoff_image_id = BL33_IMAGE_ID,
 	},

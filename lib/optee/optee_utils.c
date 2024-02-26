@@ -33,6 +33,8 @@ bool optee_header_is_valid(uintptr_t header_base)
 	return tee_validate_header((optee_header_t *)header_base);
 }
 
+#define BL32_PHYS_OFFSET 0x10000
+
 /*******************************************************************************
  * Parse the OPTEE image
  * Return 0 on success or a negative error code otherwise.
@@ -45,6 +47,7 @@ static int parse_optee_image(image_info_t *image_info,
 
 	init_load_addr = ((uint64_t)image->load_addr_hi << 32) |
 					image->load_addr_lo;
+	init_load_addr += BL32_PHYS_OFFSET;
 	init_size = image->size;
 
 	/*
